@@ -13,6 +13,9 @@ console.log('Backstop loaded')
 
 const fs = __nccwpck_require__(747)
 const path = __nccwpck_require__(622)
+
+console.log('path and file loaded')
+
 const configFile = fs.readFileSync(__nccwpck_require__.ab + "backstop.json")
 const customConfig = JSON.parse(configFile)
 
