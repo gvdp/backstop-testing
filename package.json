@@ -1,0 +1,15 @@
+{
+  "name": "backstop-action",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:gvdp/backstop-testing.git",
+  "author": "gvdp <vdputteglenn@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "ncc build index.js -o .github/actions/backstop "
+  },
+  "dependencies": {
+    "@vercel/ncc": "^0.27.0",
+    "backstopjs": "^5.1.0"
+  }
+}
