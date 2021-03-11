@@ -1,5 +1,8 @@
 const backstop = require('backstopjs')
-const customConfig = require('./backstop.json')
+const fs = require('fs')
+const path = require('path')
+const configFile = fs.readFileSync(path.resolve(process.cwd(), 'backstop.json'))
+const customConfig = JSON.parse(configFile)
 
 if (process.env.CI === 'true') {
 	customConfig.dockerCommandTemplate =
