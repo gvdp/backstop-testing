@@ -3,3 +3,4 @@
 /backstop_data/html_report/
 /node_modules/
 yarn-error.log
+/backstop.config-for-docker.json

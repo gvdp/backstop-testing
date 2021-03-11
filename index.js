@@ -1,5 +1,5 @@
 const backstop = require('backstopjs')
-const customConfig = require('backstop.json')
+const customConfig = require('./backstop.json')
 
 if (process.env.CI === 'true') {
 	customConfig.dockerCommandTemplate =
