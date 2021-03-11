@@ -6,10 +6,16 @@
   "author": "gvdp <vdputteglenn@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "ncc build index.js -o .github/actions/backstop "
+    "build": "ncc build index.js -o action/"
   },
   "dependencies": {
     "@vercel/ncc": "^0.27.0",
-    "backstopjs": "^5.1.0"
+    "backstopjs": "^5.1.0",
+    "husky": "4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn build",
+    }
   }
 }
