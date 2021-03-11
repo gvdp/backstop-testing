@@ -9,7 +9,7 @@ jobs:
     name: Backstop Test
     steps:
       - uses: actions/checkout@v2
-      - uses: ./backstop
+      - uses: ./action
 #      - name: Archive results
 #        uses: actions/upload-artifact@v2
 #        if: ${{ failure() }}
