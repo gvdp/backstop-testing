@@ -5,6 +5,8 @@ module.exports =
 /***/ 932:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
 
+console.log("Starting backstop action")
+
 const backstop = __nccwpck_require__(724)
 const fs = __nccwpck_require__(747)
 const path = __nccwpck_require__(622)

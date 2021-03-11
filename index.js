@@ -1,3 +1,5 @@
+console.log("Starting backstop action")
+
 const backstop = require('backstopjs')
 const fs = require('fs')
 const path = require('path')
