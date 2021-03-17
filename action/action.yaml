@@ -1,0 +1,22 @@
+name: 'Hello World'
+description: 'Greet someone and record the time'
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'composite'
+  steps:
+    - run: echo Hello ${{ inputs.who-to-greet }}.
+      shell: bash
+    - uses: bahmutov/npm-install@v1
+      with:
+        working-directory: action
+      env:
+        NODE_ENV: production
+    - run: yarn test
+      working-directory: action
