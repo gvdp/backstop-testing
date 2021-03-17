@@ -1,4 +1,4 @@
-require('./sourcemap-register.js');module.exports =
+module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -5444,4 +5444,3 @@ module.exports = require("util");;
 /******/ 	return __nccwpck_require__(932);
 /******/ })()
 ;
-//# sourceMappingURL=index.js.map

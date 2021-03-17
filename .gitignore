@@ -4,3 +4,4 @@
 /node_modules/
 yarn-error.log
 /backstop.config-for-docker.json
+/node_modules/
