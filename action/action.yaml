@@ -22,7 +22,7 @@ runs:
     - run: ${{ github.action_path }}/archive-result.sh
       shell: bash
       working-directory: ${{ github.action_path }}
-#    - run: ${{ github.action_path }}/archive-result.sh
+#    - run: ${{ github.action_path }}/deploy-to-netlify.sh
 #      shell: bash
 #      working-directory: backstop_data
 #      env:
