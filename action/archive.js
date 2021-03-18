@@ -1,4 +1,5 @@
 const artifact = require('@actions/artifact')
+const core = require('@actions/core')
 const artifactClient = artifact.create()
 const artifactName = 'backstop-results'
 const files = [
@@ -10,7 +11,18 @@ const options = {
 	continueOnError: false,
 }
 
-artifactClient.uploadArtifact(artifactName, files, rootDirectory, options).then(response => {
+async function run() {
+	try {
+await artifactClient.uploadArtifact(artifactName, files, rootDirectory, options).then(response => {
 	console.log('artifact uploaded')
 	console.log(response)
 })
+
+
+	}
+	catch (error) {
+		core.setFailed(error.message);
+	}
+}
+
+run();
