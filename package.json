@@ -1,8 +1,0 @@
-{
-  "name": "backstop-action",
-  "version": "1.0.0",
-  "main": "action/index.js",
-  "repository": "git@github.com:gvdp/backstop-testing.git",
-  "author": "gvdp <vdputteglenn@gmail.com>",
-  "license": "MIT"
-}
