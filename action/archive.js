@@ -3,7 +3,9 @@ const core = require('@actions/core')
 const artifactClient = artifact.create()
 const artifactName = 'backstop-results'
 const files = [
-	'archive.js',
+	'backstop_data/html_report/',
+	'backstop_data/bitmaps_test/',
+	'backstop_data/bitmaps_reference/'
 ]
 
 const rootDirectory = '.' // Also possible to use __dirname
