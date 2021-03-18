@@ -1,6 +1,6 @@
 /.idea/
-/backstop_data/bitmaps_test/
-/backstop_data/html_report/
+/action/backstop_data/bitmaps_test/
+/action/backstop_data/html_report/
 /node_modules/
 yarn-error.log
 /backstop.config-for-docker.json

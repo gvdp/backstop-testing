@@ -1,0 +1,14 @@
+{
+  "name": "backstop-action",
+  "version": "1.0.0",
+  "repository": "git@github.com:gvdp/backstop-testing.git",
+  "author": "gvdp <vdputteglenn@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "@actions/artifact": "0.5.0",
+    "backstopjs": "5.1.0"
+  }
+}

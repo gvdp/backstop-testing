@@ -10,12 +10,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./action
-#      - name: Archive results
-#        uses: actions/upload-artifact@v2
-#        if: ${{ failure() }}
-#        with:
-#          name: backstop report
-#          path: |
-#            backstop_data/html_report/
-#            backstop_data/bitmaps_test/
-#            backstop_data/bitmaps_reference/
+

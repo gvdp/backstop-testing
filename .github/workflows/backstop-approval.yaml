@@ -9,10 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Approve backstop test
     steps:
-      - name: Dump GitHub context
-        run: echo "$GITHUB_CONTEXT"
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-      - name: get artifact
-        if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
-        run: sh ./.github/scripts/release.sh
+      - uses: ./approve-images
+
+
