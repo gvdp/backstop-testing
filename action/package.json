@@ -8,6 +8,6 @@
     "test": "node index.js"
   },
   "dependencies": {
-    "backstopjs": "^5.1.0"
+    "backstopjs": "5.1.0"
   }
 }
