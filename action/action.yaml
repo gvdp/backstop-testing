@@ -15,6 +15,6 @@ runs:
       shell: bash
     - run: ${{ github.action_path }}/install.sh
       shell: bash
-    - run: ${{ github.action_path }}/run.sh
+    - run: ${{ github.action_path }}/run-test.sh
       shell: bash
       working-directory: action
