@@ -13,10 +13,8 @@ runs:
   steps:
     - run: echo Hello ${{ inputs.who-to-greet }}.
       shell: bash
-    - uses: bahmutov/npm-install@v1
-      with:
-        working-directory: action
-      env:
-        NODE_ENV: production
-    - run: yarn test
+    - run: ${{ github.action_path }}/install.sh
+      shell: bash
+    - run: ${{ github.action_path }}/run.sh
+      shell: bash
       working-directory: action
