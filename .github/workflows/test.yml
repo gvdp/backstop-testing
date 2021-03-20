@@ -15,6 +15,6 @@ jobs:
 #            backstop_data/html_report/
 #            backstop_data/bitmaps_test/
 #            backstop_data/bitmaps_reference/
-#        env:
-#          ACTIONS_RUNTIME_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        env:
+          ACTIONS_RUNTIME_TOKEN: ${{secrets.GITHUB_TOKEN}}
 

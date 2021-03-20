@@ -5,10 +5,10 @@ inputs:
     description: 'Who to greet'
     required: true
     default: 'World'
-  path:  # id of input
-    description: 'path'
-    required: false
-    default: backstop_data/html_report/
+#  path:  # id of input
+#    description: 'path'
+#    required: false
+#    default: backstop_data/html_report/
 
 runs:
   using: 'composite'
