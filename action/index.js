@@ -31,4 +31,4 @@ console.log('Running backstop with config', customConfig)
 // })
 //
 
-exec.exec('node upload-artifact/index.js')
+exec.exec('node action/upload-artifact/index.js')
