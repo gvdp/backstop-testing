@@ -33,8 +33,11 @@ backstop('test', { config: customConfig, docker: true }).catch((err) => {
 
 async function upload() {
 	try {
+		await exec.exec('pwd')
+		await exec.exec('ls')
 		await exec.exec('node action/upload-artifact/index.js')
 	} catch (error) {
+		console.log(error)
 		core.setFailed(error.message)
 	}
 }
