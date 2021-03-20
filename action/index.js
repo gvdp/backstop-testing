@@ -1,6 +1,7 @@
 console.log("Starting backstop action")
 
 const backstop = require('backstopjs')
+const exec = require('@actions/exec')
 
 console.log('Backstop loaded')
 
@@ -21,10 +22,13 @@ if (process.env.CI === 'true') {
 
 console.log('Running backstop with config', customConfig)
 
-backstop('test', { config: customConfig, docker: true }).catch((err) => {
-	console.error('Backstop test failed with ', err)
-	if (process.env.CI === 'true') {
-		//todo: make this mark the build as failed
-		// process.exit(1)
-	}
-})
+// backstop('test', { config: customConfig, docker: true }).catch((err) => {
+// 	console.error('Backstop test failed with ', err)
+// 	if (process.env.CI === 'true') {
+// 		//todo: make this mark the build as failed
+// 		// process.exit(1)
+// 	}
+// })
+//
+
+exec.exec('node upload-artifact/index.js')

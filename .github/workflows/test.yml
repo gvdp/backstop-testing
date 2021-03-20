@@ -9,6 +9,10 @@ jobs:
     name: Backstop Test
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: action
       - uses: ./action
 #        with:
 #          path: |

@@ -11,25 +11,28 @@ inputs:
 #    default: backstop_data/html_report/
 
 runs:
-  using: 'composite'
-  steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
-      shell: bash
-    - run: echo Path ${{ inputs.path }}.
-      shell: bash
-    - run: ${{ github.action_path }}/install.sh
-      shell: bash
-      working-directory: ${{ github.action_path }}
-    - run: ${{ github.action_path }}/run-test.sh
-      shell: bash
-      working-directory: ${{ github.action_path }}
-    - run: ${{ github.action_path }}/archive-result.sh
-      shell: bash
-      working-directory: ${{ github.action_path }}
-      env:
-        INPUT_PATH: backstop_data/html_report/
-        INPUT_IF-NO-FILES-FOUND: error
-        INPUT_NAME: backstop report
+  using: 'node12'
+  main: 'index.js'
+
+#  using: 'composite'
+#  steps:
+#    - run: echo Hello ${{ inputs.who-to-greet }}.
+#      shell: bash
+#    - run: echo Path ${{ inputs.path }}.
+#      shell: bash
+#    - run: ${{ github.action_path }}/install.sh
+#      shell: bash
+#      working-directory: ${{ github.action_path }}
+#    - run: ${{ github.action_path }}/run-test.sh
+#      shell: bash
+#      working-directory: ${{ github.action_path }}
+#    - run: ${{ github.action_path }}/archive-result.sh
+#      shell: bash
+#      working-directory: ${{ github.action_path }}
+#      env:
+#        INPUT_PATH: backstop_data/html_report/
+#        INPUT_IF-NO-FILES-FOUND: error
+#        INPUT_NAME: backstop report
 
 #    - run: ${{ github.action_path }}/deploy-to-netlify.sh
 #      shell: bash
