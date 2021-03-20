@@ -31,10 +31,12 @@ console.log('Running backstop with config', customConfig)
 // 	}
 // })
 //
-try {
-
-	exec.exec('node action/upload-artifact/index.js')
-} catch (error) {
-	core.setFailed(error.message)
-
+async function upload() {
+	try {
+		await exec.exec('node action/upload-artifact/index.js')
+	} catch (error) {
+		core.setFailed(error.message)
+	}
 }
+
+upload()
