@@ -2,4 +2,5 @@
 
 ls
 
-node archive.js
+node upload-artifact/index
+#node archive.js

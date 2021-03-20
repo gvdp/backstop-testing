@@ -1,11 +1,11 @@
-const artifact = require('@actions/artifact')
-const core = require('@actions/core')
-const artifactClient = artifact.create()
-const artifactName = 'backstop-results'
-const files = [
+// const core = require('@actions/core')
+
+const upload = require('upload-artifact/index')
+
+const path = [
 	'backstop_data/html_report/',
 	'backstop_data/bitmaps_test/',
-	'backstop_data/bitmaps_reference/'
+	'backstop_data/bitmaps_reference/',
 ]
 
 const rootDirectory = '.' // Also possible to use __dirname
@@ -15,16 +15,11 @@ const options = {
 
 async function run() {
 	try {
-await artifactClient.uploadArtifact(artifactName, files, rootDirectory, options).then(response => {
-	console.log('artifact uploaded')
-	console.log(response)
-})
+		await upload()
 
-
-	}
-	catch (error) {
-		core.setFailed(error.message);
+	}	catch (error) {
+		// core.setFailed(error.message)
 	}
 }
 
-run();
+run()

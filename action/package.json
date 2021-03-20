@@ -5,7 +5,8 @@
   "author": "gvdp <vdputteglenn@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "node index.js"
+    "test": "node index.js",
+    "get-upload-artifact": "wget https://raw.githubusercontent.com/actions/upload-artifact/main/dist/index.js -O upload-artifact/index.js"
   },
   "dependencies": {
     "@actions/artifact": "0.5.0",
