@@ -8,17 +8,14 @@ inputs:
   path:  # id of input
     description: 'path'
     required: false
-    default: |
-      backstop_data/html_report/
-      backstop_data/bitmaps_test/
-      backstop_data/bitmaps_reference/
+    default: backstop_data/html_report/
 
 runs:
   using: 'composite'
   steps:
     - run: echo Hello ${{ inputs.who-to-greet }}.
       shell: bash
-    - run: echo Path ${{ inputs.path}}.
+    - run: echo Path ${{ inputs.path }}.
       shell: bash
     - run: ${{ github.action_path }}/install.sh
       shell: bash
