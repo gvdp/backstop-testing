@@ -1,7 +1,8 @@
-console.log("Starting backstop action")
+console.log('Starting backstop action')
 
 const backstop = require('backstopjs')
 const exec = require('@actions/exec')
+const core = require('@actions/core')
 
 console.log('Backstop loaded')
 
@@ -30,5 +31,10 @@ console.log('Running backstop with config', customConfig)
 // 	}
 // })
 //
+try {
 
-exec.exec('node action/upload-artifact/index.js')
+	exec.exec('node action/upload-artifact/index.js')
+} catch (error) {
+	core.setFailed(error.message)
+
+}
