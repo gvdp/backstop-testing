@@ -31,8 +31,11 @@ backstop('test', { config: customConfig, docker: true }).catch((err) => {
 	}
 })
 
+console.log('backstop test done')
+
 async function upload() {
 	try {
+		console.log('uploading artifact')
 		await exec.exec('pwd')
 		await exec.exec('ls')
 		await exec.exec('node action/upload-artifact/index.js')
