@@ -9,9 +9,9 @@ inputs:
     description: 'path'
     required: false
     default: |
-      backstop_data/html_report/
-      backstop_data/bitmaps_test/
-      backstop_data/bitmaps_reference/
+      action/backstop_data/html_report/
+      action/backstop_data/bitmaps_test/
+      action/backstop_data/bitmaps_reference/
   if-no-files-found:  # id of input
     required: false
     default: error
