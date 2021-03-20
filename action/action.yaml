@@ -9,6 +9,9 @@ inputs:
     description: 'path'
     required: false
     default: backstop_data/html_report/
+  if-no-files-found:  # id of input
+    required: false
+    default: error
 
 runs:
   using: 'node12'
