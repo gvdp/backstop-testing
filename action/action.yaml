@@ -28,7 +28,7 @@ runs:
       working-directory: ${{ github.action_path }}
       env:
         INPUT_PATH: backstop_data/html_report/
-        INPUT_IF_NO_FILES_FOUND: error
+        INPUT_IF-NO-FILES-FOUND: error
         INPUT_NAME: backstop report
 
 #    - run: ${{ github.action_path }}/deploy-to-netlify.sh
