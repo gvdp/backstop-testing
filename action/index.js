@@ -23,16 +23,19 @@ if (process.env.CI === 'true') {
 
 console.log('Running backstop with config', customConfig)
 
-backstop('test', { config: customConfig, docker: true }).catch((err) => {
-	console.error('Backstop test failing with ', err)
-	if (process.env.CI === 'true') {
-		//todo: make this mark the build as failed
-		// process.exit(1)
-	}
-	console.log('after failure')
-})
+async function runTest() {
+	return backstop('test', {config: customConfig, docker: true}).catch((err) => {
+		console.error('Backstop test failing with ', err)
+		if (process.env.CI === 'true') {
+			//todo: make this mark the build as failed
+			// process.exit(1)
+		}
+		console.log('after failure')
+	}).then(() => {
+		console.log('backstop test done')
+	})
+}
 
-console.log('backstop test done')
 
 async function upload() {
 	try {
@@ -46,4 +49,6 @@ async function upload() {
 	}
 }
 
-upload()
+runTest().then(() => {
+	upload()
+})
