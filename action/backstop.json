@@ -37,7 +37,7 @@
   ],
   "paths": {
     "bitmaps_reference": "bitmaps_reference",
-    "bitmaps_test": "backstop_data/bitmaps_test",
+    "bitmaps_test": "bitmaps_test",
     "engine_scripts": "engine_scripts",
     "html_report": "html_report",
     "ci_report": "ci_report"

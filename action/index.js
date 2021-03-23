@@ -21,6 +21,16 @@ if (process.env.CI === 'true') {
 		'docker run --rm -i --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}'
 }
 
+// todo: hardcode properties to
+// "paths": {
+// 	"bitmaps_reference": "bitmaps_reference",
+// 		"bitmaps_test": "backstop_data/bitmaps_test",
+// 		"engine_scripts": "engine_scripts",
+// 		"html_report": "html_report",
+// 		"ci_report": "ci_report"
+// }, ????
+
+
 console.log('Running backstop with config', customConfig)
 
 async function runTest() {
