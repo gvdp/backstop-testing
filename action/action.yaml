@@ -8,10 +8,7 @@ inputs:
   path:  # id of input
     description: 'path'
     required: false
-    default: |
-      action/backstop_data/html_report/
-      action/backstop_data/bitmaps_test/
-      action/backstop_data/bitmaps_reference/
+    default: action/backstop_data
   if-no-files-found:  # id of input
     required: false
     default: error
