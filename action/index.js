@@ -43,7 +43,7 @@ async function runTest() {
 
 			const args = 'test'
 			core.debug(
-				`yarn command: "${yarnPath}" ${args} ${JSON.stringify(options)}`,
+				`yarn command: "${yarnPath}" ${args} `,
 			)
 			return exec.exec(quote(yarnPath), args, {cwd: '/action'})
 
