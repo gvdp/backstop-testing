@@ -3,6 +3,8 @@ console.log('Starting backstop action')
 // const backstop = require('backstopjs')
 const exec = require('@actions/exec')
 const core = require('@actions/core')
+const io = require('@actions/io')
+const quote = require('quote')
 
 console.log('Backstop loaded')
 
@@ -34,18 +36,31 @@ console.log('config parsed')
 console.log('Running backstop with config', configFile)
 
 async function runTest() {
-	return exec.exec('yarn test', [], {cwd: '/action'}).catch((err) => {
-		console.error('Backstop test failing with ', err)
-		if (process.env.CI === 'true') {
-			//todo: make this mark the build as failed
-			// process.exit(1)
-			core.setFailed(error.message)
 
-		}
-		console.log('after failure')
-	}).then(() => {
-		console.log('backstop test done')
-	})
+	return io.which('yarn', true)
+		.then(yarnPath => {
+			console.log('yarn at "%s"', yarnPath)
+
+			const args = 'test'
+			core.debug(
+				`yarn command: "${yarnPath}" ${args} ${JSON.stringify(options)}`,
+			)
+			return exec.exec(quote(yarnPath), args, {cwd: '/action'})
+
+				.catch((err) => {
+					console.error('Backstop test failing with ', err)
+					if (process.env.CI === 'true') {
+						//todo: make this mark the build as failed
+						// process.exit(1)
+						core.setFailed(err.message)
+
+					}
+					console.log('after failure')
+				})
+				.then(() => {
+					console.log('backstop test done')
+				})
+		})
 }
 
 
