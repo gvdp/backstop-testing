@@ -39,6 +39,8 @@ async function runTest() {
 		if (process.env.CI === 'true') {
 			//todo: make this mark the build as failed
 			// process.exit(1)
+			core.setFailed(error.message)
+
 		}
 		console.log('after failure')
 	}).then(() => {
