@@ -1,6 +1,6 @@
 console.log('Starting backstop action')
 
-const backstop = require('backstopjs')
+// const backstop = require('backstopjs')
 const exec = require('@actions/exec')
 const core = require('@actions/core')
 
@@ -16,10 +16,10 @@ const customConfig = JSON.parse(configFile)
 
 console.log('config parsed')
 
-if (process.env.CI === 'true') {
-	customConfig.dockerCommandTemplate =
-		'docker run --rm -i --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}'
-}
+// if (process.env.CI === 'true') {
+// 	customConfig.dockerCommandTemplate =
+// 		'docker run --rm -i --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}'
+// }
 
 // todo: hardcode properties to
 // "paths": {
@@ -31,10 +31,10 @@ if (process.env.CI === 'true') {
 // }, ????
 
 
-console.log('Running backstop with config', customConfig)
+console.log('Running backstop with config', configFile)
 
 async function runTest() {
-	return backstop('test', {config: customConfig, docker: true}).catch((err) => {
+	return exec.exec('backstop test --docker', [], {}).catch((err) => {
 		console.error('Backstop test failing with ', err)
 		if (process.env.CI === 'true') {
 			//todo: make this mark the build as failed
