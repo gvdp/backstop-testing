@@ -49,19 +49,20 @@ async function runTest() {
 				.then(() => {
 					return exec.exec(quote(yarnPath), args, {cwd: '/action'})
 
-						.catch((err) => {
-							console.error('Backstop test failing with ', err)
-							if (process.env.CI === 'true') {
-								//todo: make this mark the build as failed
-								// process.exit(1)
-								core.setFailed(err.message)
+				})
+				.catch((err) => {
+					console.error('Backstop test failing with ', err)
+					if (process.env.CI === 'true') {
+						//todo: make this mark the build as failed
+						// process.exit(1)
+						core.setFailed(err.message)
 
-							}
-							console.log('after failure')
-						})
-						.then(() => {
-							console.log('backstop test done')
-						})
+					}
+					console.log('after failure')
+					return upload()
+				})
+				.then(() => {
+					console.log('backstop test done')
 				})
 		})
 }
@@ -79,6 +80,4 @@ async function upload() {
 	}
 }
 
-runTest().then(() => {
-	upload()
-})
+runTest()
