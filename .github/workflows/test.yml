@@ -14,7 +14,6 @@ jobs:
         with:
           working-directory: action
       - uses: ./action
-        working-directory: action
 #        with:
 #          path: |
 #            backstop_data/html_report/
