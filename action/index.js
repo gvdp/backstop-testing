@@ -19,6 +19,7 @@ const customConfig = JSON.parse(configFile)
 console.log('config parsed')
 
 if (process.env.CI === 'true') {
+	// removes -t parameter for run because ci agent is not a tty terminal
 	customConfig.dockerCommandTemplate =
 		'docker run --rm -i --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}'
 }
@@ -36,7 +37,7 @@ if (process.env.CI === 'true') {
 console.log('Running backstop with config', customConfig)
 
 
-fs.writeFileSync(path.join(__dirname, 'backstop.json'), customConfig.toString())
+fs.writeFileSync(path.join(__dirname, 'backstop.json'), JSON.stringify(customConfig))
 
 
 async function runTest() {
