@@ -18,10 +18,10 @@ const customConfig = JSON.parse(configFile)
 
 console.log('config parsed')
 
-// if (process.env.CI === 'true') {
-// 	customConfig.dockerCommandTemplate =
-// 		'docker run --rm -i --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}'
-// }
+if (process.env.CI === 'true') {
+	customConfig.dockerCommandTemplate =
+		'docker run --rm -i --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}'
+}
 
 // todo: hardcode properties to
 // "paths": {
@@ -34,6 +34,10 @@ console.log('config parsed')
 
 
 console.log('Running backstop with config', customConfig)
+
+
+fs.writeFileSync(path.join(__dirname, 'backstop.json'), customConfig.toString())
+
 
 async function runTest() {
 
