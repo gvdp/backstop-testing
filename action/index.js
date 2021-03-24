@@ -45,9 +45,9 @@ async function runTest() {
 			core.debug(
 				`yarn command: "${yarnPath}" ${args} `,
 			)
-			return exec.exec('pwd', '', {cwd: '/action'})
+			return exec.exec('pwd', [], {cwd: '/action'})
 				.then(() => {
-					return exec.exec(quote(yarnPath), args, {cwd: '/action'})
+					return exec.exec(quote(yarnPath), ['test'], {cwd: '/action'})
 
 				})
 				.catch((err) => {
