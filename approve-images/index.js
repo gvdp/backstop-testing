@@ -26,7 +26,9 @@ async function downloadArtifact() {
 
 
 		const myToken = core.getInput('token')
+		console.log('token fetched to be', myToken) // todo: remove this log
 		const octokit = github.getOctokit(myToken)
+		console.log('kit authenticated')
 		const context = github.context
 		console.log('context', context)
 
@@ -38,6 +40,7 @@ async function downloadArtifact() {
 
 
 	} catch (error) {
+		console.log('something went wrong')
 		console.log(error)
 		core.setFailed(error.message)
 	}
