@@ -25,7 +25,7 @@ async function downloadArtifact() {
 		const github = require('@actions/github')
 		const core = require('@actions/core')
 
-		const myToken = core.getInput('myToken')
+		const myToken = core.getInput('token')
 		const octokit = github.getOctokit(myToken)
 		const context = github.context
 		console.log('context', context)
