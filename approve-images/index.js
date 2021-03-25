@@ -1,30 +1,36 @@
-console.log("Starting backstop action")
+const io = require('@actions/io')
+const exec = require('@actions/exec')
+const quote = require('quote')
 
-const backstop = require('backstopjs')
 
-console.log('Backstop loaded')
+async function approve() {
+	return io.which('yarn', true)
+		.then(yarnPath => {
+			console.log('yarn at "%s"', yarnPath)
 
-const fs = require('fs')
-const path = require('path')
+			const args = 'approve'
+			core.debug(
+				`yarn command: "${yarnPath}" ${args} `,
+			)
 
-console.log('path and file loaded')
+			return exec.exec(quote(yarnPath), ['approve'], {cwd: './approve-images'})
 
-const configFile = fs.readFileSync(path.join(__dirname, 'backstop.json'))
-const customConfig = JSON.parse(configFile)
-
-console.log('config parsed')
-
-if (process.env.CI === 'true') {
-	customConfig.dockerCommandTemplate =
-		'docker run --rm -i --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}'
+		})
 }
 
-console.log('Running backstop with config', customConfig)
 
-backstop('test', { config: customConfig, docker: true }).catch((err) => {
-	console.error('Backstop test failed with ', err)
-	if (process.env.CI === 'true') {
-		//todo: make this mark the build as failed
-		// process.exit(1)
+async function downloadArtifact() {
+	try {
+		console.log('downloading artifact')
+		await exec.exec('node action/download-artifact/index.js')
+		await exec.exec('ls')
+	} catch (error) {
+		console.log(error)
+		core.setFailed(error.message)
 	}
+}
+
+
+downloadArtifact().then(() => {
+	approve()
 })

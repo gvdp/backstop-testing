@@ -9,6 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Approve backstop test
     steps:
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: approve-images # todo: this should happen inside action itself
       - uses: ./approve-images
 
 

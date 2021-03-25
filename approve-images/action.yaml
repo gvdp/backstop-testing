@@ -5,21 +5,18 @@ inputs:
     description: 'Who to greet'
     required: true
     default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  path:  # id of input
+    description: 'path'
+    required: false
+    default: action/backstop_data
+  if-no-files-found:  # id of input
+    required: false
+    default: error
+  name:  # id of input
+    required: false
+    default: backstop report
+
 runs:
-  using: 'composite'
-  steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
-      shell: bash
-    - name: Dump GitHub context
-      run: echo "$GITHUB_CONTEXT"
-      env:
-        GITHUB_CONTEXT: ${{ toJSON(github) }}
-    - run: ${{ github.action_path }}/install.sh
-      shell: bash
-      working-directory: ${{ github.action_path }}
-    - run: ${{ github.action_path }}/approve-images.sh
-      shell: bash
-      working-directory: ${{ github.action_path }}
+  using: 'node12'
+  main: 'index.js'
+

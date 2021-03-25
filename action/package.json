@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "test": "backstop test --docker",
-    "get-upload-artifact": "wget https://raw.githubusercontent.com/actions/upload-artifact/main/dist/index.js -O upload-artifact/index.js"
+    "get-download-artifact": "wget https://raw.githubusercontent.com/actions/download-artifact/main/dist/index.js -O download-artifact/index.js"
   },
   "dependencies": {
     "@actions/artifact": "0.5.0",

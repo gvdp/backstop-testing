@@ -9,10 +9,9 @@ jobs:
     name: Backstop Test
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
         with:
-          working-directory: action
+          working-directory: action # todo: this should happen inside action itself
       - uses: ./action
 #        with:
 #          path: |
@@ -21,4 +20,9 @@ jobs:
 #            backstop_data/bitmaps_reference/
         env:
           ACTIONS_RUNTIME_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: approve-images # todo: this should happen inside action itself
+      - uses: ./approve-images
 
