@@ -1,7 +1,8 @@
 name: Run backstop test
 
 on:
-  push
+  pull_request:
+    branches: [main]
 
 jobs:
   visual-test:
@@ -21,8 +22,4 @@ jobs:
         env:
           ACTIONS_RUNTIME_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - uses: bahmutov/npm-install@v1
-        with:
-          working-directory: approve-images # todo: this should happen inside action itself
-      - uses: ./approve-images
 

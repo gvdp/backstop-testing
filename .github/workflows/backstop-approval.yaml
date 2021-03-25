@@ -14,5 +14,7 @@ jobs:
         with:
           working-directory: approve-images # todo: this should happen inside action itself
       - uses: ./approve-images
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
 

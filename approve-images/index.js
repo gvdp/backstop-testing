@@ -22,15 +22,35 @@ async function approve() {
 async function downloadArtifact() {
 	try {
 		console.log('downloading artifact')
-		await exec.exec('node action/download-artifact/index.js')
-		await exec.exec('ls')
+		const github = require('@actions/github')
+		const core = require('@actions/core')
+
+		const myToken = core.getInput('myToken')
+		const octokit = github.getOctokit(myToken)
+		const context = github.context
+		console.log('context', context)
+
+		const {data} = await octokit.request('GET /repos/{owner}/{repo}/actions/artifacts', {
+			...context.repo,
+		})
+
+		console.log(data)
+
+
 	} catch (error) {
 		console.log(error)
 		core.setFailed(error.message)
 	}
 }
 
+async function commitResult() {
+	console.log('committing')
+	await exec.exec('ls')
+}
+
 
 downloadArtifact().then(() => {
-	approve()
+	return approve().then(() => {
+		return commitResult()
+	})
 })
