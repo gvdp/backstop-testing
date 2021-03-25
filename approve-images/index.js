@@ -1,7 +1,8 @@
 const io = require('@actions/io')
 const exec = require('@actions/exec')
 const quote = require('quote')
-
+const github = require('@actions/github')
+const core = require('@actions/core')
 
 async function approve() {
 	return io.which('yarn', true)
@@ -22,8 +23,7 @@ async function approve() {
 async function downloadArtifact() {
 	try {
 		console.log('downloading artifact')
-		const github = require('@actions/github')
-		const core = require('@actions/core')
+
 
 		const myToken = core.getInput('token')
 		const octokit = github.getOctokit(myToken)
@@ -48,6 +48,7 @@ async function commitResult() {
 	await exec.exec('ls')
 }
 
+console.log('sstart run')
 
 downloadArtifact().then(() => {
 	return approve().then(() => {
