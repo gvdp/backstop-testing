@@ -13,6 +13,7 @@ jobs:
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: approve-images # todo: this should happen inside action itself
+#        todo: only do this when comment contains keyword
       - uses: ./approve-images
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
