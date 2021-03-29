@@ -4,6 +4,8 @@ const quote = require('quote')
 const github = require('@actions/github')
 const core = require('@actions/core')
 
+console.log('is core here?', core)
+
 async function approve() {
 	return io.which('yarn', true)
 		.then(yarnPath => {

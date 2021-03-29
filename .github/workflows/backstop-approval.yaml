@@ -17,5 +17,7 @@ jobs:
       - uses: ./approve-images
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          event: ${{ github.event.inputs.name }}
+
 
 
