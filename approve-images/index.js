@@ -33,8 +33,9 @@ async function downloadArtifact() {
 		console.log('kit authenticated')
 		const context = github.context
 		console.log('context', context.payload.issue.pull_request)
+		console.log('context', context.payload.issue.pull_request.html_url)
 
-		const prURl = context.payload.issue.pull_request.html_url.replaceAll('https://github.com/', '/repos/')
+		const prURl = `${context.payload.issue.pull_request.html_url}`.replaceAll('https://github.com/', '/repos/')
 
 		console.log('pr url')
 
