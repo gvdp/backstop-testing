@@ -38,6 +38,10 @@ async function downloadArtifact() {
 			...context.repo,
 		})
 
+
+
+
+
 		console.log(data)
 
 
