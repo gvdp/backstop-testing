@@ -34,6 +34,21 @@ async function downloadArtifact() {
 		const context = github.context
 		console.log('context', context.payload.issue.pull_request)
 
+		const prURl = context.payload.issue.pull_request.html_url.replaceAll('https://github.com/', '/repos/')
+
+		console.log('pr url')
+
+		const {prInfo} = await octokit.request(`GET ${prURl}`, {
+			...context.repo,
+		})
+
+		console.log(prInfo)
+		console.log('branch name', prInfo.head.ref)
+
+
+		await exec.exec('git', ['checkout', prInfo.head.ref])
+
+
 		const {data} = await octokit.request('GET /repos/{owner}/{repo}/actions/artifacts', {
 			...context.repo,
 		})
