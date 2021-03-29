@@ -52,7 +52,7 @@ async function downloadArtifact() {
 
 		const prOpts = {
 			...context.repo,
-			pull_number: Number(prNumber + 7),
+			pull_number: Number(prNumber ),
 		}
 		console.log('getting pr', prOpts)
 
