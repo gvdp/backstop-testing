@@ -62,7 +62,9 @@ async function downloadArtifact() {
 		console.log('branch name', prInfo.head.ref)
 
 
-		await exec.exec('git', ['checkout', prInfo.head.ref])
+		await exec.exec('git', ['status'])
+		// await exec.exec('git', ['checkout', prInfo.head.ref])
+		await exec.exec('git', ['checkout', `origin/${prInfo.head.ref}`])
 
 
 
