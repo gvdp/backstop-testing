@@ -64,10 +64,7 @@ async function downloadArtifact() {
 
 		await exec.exec('git', ['status'])
 		await exec.exec('git', ['fetch'])
-		await exec.exec('git', ['remote'])
-		await exec.exec('git', ['branch', '-al'])
-		// await exec.exec('git', ['checkout', prInfo.head.ref])
-		await exec.exec('git', ['checkout', `origin/${prInfo.head.ref}`])
+		await exec.exec('git', ['checkout', prInfo.head.ref])
 
 
 
