@@ -40,11 +40,14 @@ async function downloadArtifact() {
 		console.log('pr number: ', prNumber)
 
 
-		const {prInfo} = await octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', {
+		const prOpts = {
 			owner: context.payload.repository.owner.login,
 			repo: context.payload.repository.name,
 			pull_number: Number(prNumber),
-		})
+		}
+		console.log('getting pr', prOpts)
+
+		const {prInfo} = await octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', prOpts)
 
 		console.log(prInfo)
 		console.log('branch name', prInfo.head.ref)
