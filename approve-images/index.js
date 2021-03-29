@@ -32,15 +32,17 @@ async function downloadArtifact() {
 		const octokit = github.getOctokit(myToken)
 		console.log('kit authenticated')
 		const context = github.context
+		console.log('context', context)
 		console.log('context', context.payload.issue.pull_request)
-		console.log('context', context.payload.issue.pull_request.html_url)
 		const prUrl = context.payload.issue.pull_request.html_url
 		const prNumber = prUrl.substr(prUrl.indexOf('/pull/') + '/pull/'.length, prUrl.length)
 
 		console.log('pr number: ', prNumber)
 
+
 		const {prInfo} = await octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', {
-			...context.repo,
+			owner: context.repo.owner,
+			repo: context.repo.repo,
 			pull_number: prNumber,
 		})
 
