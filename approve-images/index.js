@@ -37,6 +37,16 @@ async function downloadArtifact() {
 		const prUrl = context.payload.issue.pull_request.html_url
 		const prNumber = prUrl.substr(prUrl.indexOf('/pull/') + '/pull/'.length, prUrl.length)
 
+
+		console.log('listing artifacts for ', context.repo)
+
+		const {data: artifact} = await octokit.request('GET /repos/{owner}/{repo}/actions/artifacts', {
+			...context.repo,
+		})
+
+		console.log('arts', artifact)
+
+
 		console.log('pr number: ', prNumber)
 
 
@@ -56,11 +66,7 @@ async function downloadArtifact() {
 		await exec.exec('git', ['checkout', prInfo.head.ref])
 
 
-		const {data} = await octokit.request('GET /repos/{owner}/{repo}/actions/artifacts', {
-			...context.repo,
-		})
 
-		console.log(data)
 
 
 	} catch (error) {
