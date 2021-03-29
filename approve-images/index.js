@@ -24,7 +24,7 @@ async function approve() {
 
 async function downloadArtifact() {
 	try {
-		console.log('downloading artifact')
+		console.log('downloading artifact hahahahaah')
 
 
 		const myToken = core.getInput('token')
