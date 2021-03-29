@@ -40,7 +40,7 @@ async function downloadArtifact() {
 		console.log('pr url')
 
 		const {prInfo} = await octokit.request(`GET ${prURl}`, {
-			...context.repo,
+
 		})
 
 		console.log(prInfo)
