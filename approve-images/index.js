@@ -34,13 +34,14 @@ async function downloadArtifact() {
 		const context = github.context
 		console.log('context', context.payload.issue.pull_request)
 		console.log('context', context.payload.issue.pull_request.html_url)
+		const prUrl = context.payload.issue.pull_request.html_url
+		const prNumber = prUrl.substr(prUrl.indexOf('/pull/') + '/pull/'.length, prUrl.length)
 
-		const prURl = `${context.payload.issue.pull_request.html_url}`.replace('https://github.com/', '/repos/')
+		console.log('pr number: ', prNumber)
 
-		console.log('pr url')
-
-		const {prInfo} = await octokit.request(`GET ${prURl}`, {
-
+		const {prInfo} = await octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}', {
+			...context.repo,
+			pull_number: prNumber,
 		})
 
 		console.log(prInfo)
