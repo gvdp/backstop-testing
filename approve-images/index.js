@@ -15,17 +15,29 @@ async function approve() {
 	const yarnPath = await io.which('yarn', true)
 	console.log('yarn at "%s"', yarnPath)
 
-	const args = 'approve'
-	core.debug(
-		`yarn command: "${yarnPath}" ${args} `,
-	)
+	// todo: pin version?
+	console.log('adding backstop')
+	await exec.exec(quote(yarnPath), ['global', 'add', 'backstopjs@5.1.0'])
+	let bin = ''
+	const options = {
+		listeners: {
+			stdout: (data) => {
+				bin += data.toString()
+			},
+		},
+	}
+	await exec.exec(quote(yarnPath), ['global', 'bin'], options)
+
+	console.log('yarn bin at', bin)
+	// todo: make config location configurable
+	await exec.exec(`${bin.trim()}/backstop`, ['approve'])
+
 	console.log('where are we?')
 	await exec.exec('pwd')
 	await exec.exec('ls', '/home/runner/work/backstop-testing/backstop-testing')
 	await exec.exec('ls', '/home/runner/work/backstop-testing/backstop-testing/approve-images')
 
 
-	return exec.exec(quote(yarnPath), ['approve'], {cwd: 'approve-images'})
 }
 
 
