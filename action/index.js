@@ -76,6 +76,7 @@ async function runTest() {
 async function upload() {
 	try {
 		console.log('uploading artifact')
+		//todo: set name to include branch name
 		await exec.exec('pwd')
 		await exec.exec('ls')
 		await exec.exec('node action/upload-artifact/index.js')
