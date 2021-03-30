@@ -70,16 +70,16 @@ async function downloadArtifact() {
 		//todo: search for the correct one with pr title
 		const wantedArtifact = artifact.artifacts[0]
 
-		console.log('downloading wanter artifact')
+		console.log('downloading wanted artifact')
 		const artifactUrl = await octokit.request('GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}', {
 			...context.repo,
 			artifact_id: wantedArtifact.id,
-			archive_format: 'zip'
+			archive_format: 'archive_format'
 		})
 
 		console.log('Found url', artifactUrl);
 
-		await exec.exec('wget', [artifactUrl, '-O', './approve-images'])
+		// await exec.exec('wget', [artifactUrl, '-O', './approve-images'])
 		await exec.exec('ls', ['-al'])
 
 
