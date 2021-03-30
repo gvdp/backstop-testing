@@ -91,9 +91,9 @@ console.log('endpoint: ', artifactendpoint)
 
 		console.log('Found url', artifactUrl)
 		const fileName = 'report'
-		const downloadStream = got.stream(url)
+		const downloadStream = got.stream(artifactUrl)
 		const fileWriterStream = fs.createWriteStream(fileName)
-		core.info(`Downloading ${url}`)
+		core.info(`Downloading ${artifactUrl}`)
 		downloadStream.on('downloadProgress', ({transferred, total, percent}) => {
 			const percentage = Math.round(percent * 100)
 			core.info(`Progress: ${transferred}/${total} (${percentage}%)`)
