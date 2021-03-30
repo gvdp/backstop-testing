@@ -13,7 +13,7 @@ const path = require('path')
 
 console.log('path and file loaded')
 
-const configFile = fs.readFileSync(path.join(__dirname, 'backstop.json'))
+const configFile = fs.readFileSync(path.join(process.cwd(), 'backstop.json'))
 const customConfig = JSON.parse(configFile)
 
 console.log('config parsed')
@@ -37,7 +37,7 @@ if (process.env.CI === 'true') {
 console.log('Running backstop with config', customConfig)
 
 
-fs.writeFileSync(path.join(__dirname, 'backstop.json'), JSON.stringify(customConfig))
+fs.writeFileSync(path.join(process.cwd(), 'backstop.json'), JSON.stringify(customConfig))
 
 
 async function upload() {
@@ -67,7 +67,7 @@ async function runTest() {
 
 		// todo: pin version?
 		console.log('adding backstop')
-		await exec.exec(quote(yarnPath), ['global', 'add', 'backstopjs'])
+		await exec.exec(quote(yarnPath), ['global', 'add', 'backstopjs@5.1.0'])
 		let bin = ''
 		const options = {
 			listeners: {
