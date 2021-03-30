@@ -13,8 +13,6 @@
     "@actions/core": "1.1.0",
     "@actions/io": "1.0.2",
     "@actions/exec": "1.0.4",
-    "backstopjs": "5.1.0",
     "quote": "0.4.0"
-
   }
 }

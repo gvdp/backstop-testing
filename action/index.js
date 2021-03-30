@@ -40,39 +40,6 @@ console.log('Running backstop with config', customConfig)
 fs.writeFileSync(path.join(__dirname, 'backstop.json'), JSON.stringify(customConfig))
 
 
-async function runTest() {
-
-	return io.which('yarn', true)
-		.then(yarnPath => {
-			console.log('yarn at "%s"', yarnPath)
-
-			const args = 'test'
-			core.debug(
-				`yarn command: "${yarnPath}" ${args} `,
-			)
-			return exec.exec('pwd', [], {cwd: './action'})
-				.then(() => {
-					return exec.exec(quote(yarnPath), ['test'], {cwd: './action'})
-
-				})
-				.catch((err) => {
-					console.error('Backstop test failing with ', err)
-					if (process.env.CI === 'true') {
-						//todo: make this mark the build as failed
-						// process.exit(1)
-						core.setFailed(err.message)
-
-					}
-					console.log('after failure')
-					return upload()
-				})
-				.then(() => {
-					console.log('backstop test done')
-				})
-		})
-}
-
-
 async function upload() {
 	try {
 		console.log('uploading artifact')
@@ -84,6 +51,38 @@ async function upload() {
 		console.log(error)
 		core.setFailed(error.message)
 	}
+}
+
+
+async function runTest() {
+
+	const yarnPath = await io.which('yarn', true)
+	console.log('yarn at "%s"', yarnPath)
+
+	const args = 'test'
+	core.debug(
+		`yarn command: "${yarnPath}" ${args} `,
+	)
+	try {
+
+		// todo: pin version?
+		await exec.exec(quote(yarnPath), ['global', 'add', 'backstopjs'])
+
+		// todo: make config location configurable
+		await exec.exec('backstop', ['test', '--docker'])
+
+	} catch (err) {
+		console.error('Backstop test failing with ', err)
+		if (process.env.CI === 'true') {
+			//todo: make this mark the build as failed
+			// process.exit(1)
+			core.setFailed(err.message)
+
+		}
+		console.log('after failure')
+		return upload()
+	}
+	console.log('backstop test done')
 }
 
 runTest()
