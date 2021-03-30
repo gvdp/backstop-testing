@@ -78,7 +78,7 @@ async function downloadArtifact() {
 		const artifactendpoint = octokit.actions.downloadArtifact.endpoint({
 			...context.repo,
 			artifact_id: wantedArtifact.id,
-			archive_format: 'archive_format',
+			archive_format: 'zip',
 		})
 console.log('endpoint: ', artifactendpoint)
 		const resp = await got({
