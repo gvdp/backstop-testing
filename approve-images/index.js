@@ -22,7 +22,7 @@ async function approve() {
 	console.log('where are we?')
 	await exec.exec('pwd')
 
-	return exec.exec(quote(yarnPath), ['approve'], {cwd: './approve-images'})
+	return exec.exec(quote(yarnPath), ['approve'], {cwd: 'approve-images'})
 }
 
 
