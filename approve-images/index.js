@@ -103,10 +103,11 @@ console.log('endpoint: ', artifactendpoint)
 
 		console.log('Done?')
 		// await exec.exec('wget', [artifactUrl, '-O', './approve-images'])
-		await exec.exec('ls', ['approve-images/backstop_data','-al'])
-
-
+		await exec.exec('ls', ['approve-images','-al'])
 		await exec.exec('unzip', [fileName, '-O', 'approve-images/backstop_data'])
+
+
+		await exec.exec('ls', ['approve-images/backstop_data','-al'])
 
 
 	} catch (error) {
