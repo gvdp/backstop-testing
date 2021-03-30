@@ -104,7 +104,7 @@ async function downloadArtifact() {
 		const artifactUrl = resp.headers.location
 
 		console.log('Found url', artifactUrl)
-		const fileName = 'approve-images/backstop_report.zip'
+		const fileName = 'backstop_report.zip'
 		const downloadStream = got.stream(artifactUrl)
 		const fileWriterStream = fs.createWriteStream(fileName)
 		console.log(`Downloading ${artifactUrl}`)
@@ -117,8 +117,7 @@ async function downloadArtifact() {
 
 		console.log('Done?')
 		// await exec.exec('wget', [artifactUrl, '-O', './approve-images'])
-		await exec.exec('ls', ['approve-images', '-al'])
-		await exec.exec('unzip', [fileName, '-d', 'approve-images/backstop_data'])
+		await exec.exec('unzip', [fileName, '-d', 'backstop_data'])
 
 
 		await exec.exec('ls', ['approve-images/backstop_data', '-al'])
