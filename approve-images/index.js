@@ -12,18 +12,17 @@ const asyncStream = util.promisify(stream.pipeline)
 console.log('is core here?', core)
 
 async function approve() {
-	return io.which('yarn', true)
-		.then(yarnPath => {
-			console.log('yarn at "%s"', yarnPath)
+	const yarnPath = await io.which('yarn', true)
+	console.log('yarn at "%s"', yarnPath)
 
-			const args = 'approve'
-			core.debug(
-				`yarn command: "${yarnPath}" ${args} `,
-			)
+	const args = 'approve'
+	core.debug(
+		`yarn command: "${yarnPath}" ${args} `,
+	)
+	console.log('where are we?')
+	await exec.exec('pwd')
 
-			return exec.exec(quote(yarnPath), ['approve'], {cwd: './approve-images'})
-
-		})
+	return exec.exec(quote(yarnPath), ['approve'], {cwd: './approve-images'})
 }
 
 
@@ -80,7 +79,7 @@ async function downloadArtifact() {
 			artifact_id: wantedArtifact.id,
 			archive_format: 'zip',
 		})
-console.log('endpoint: ', artifactendpoint)
+		console.log('endpoint: ', artifactendpoint)
 		const resp = await got({
 			url: artifactendpoint.url,
 			headers: {...artifactendpoint.headers, Authorization: `token ${myToken}`},
@@ -103,11 +102,11 @@ console.log('endpoint: ', artifactendpoint)
 
 		console.log('Done?')
 		// await exec.exec('wget', [artifactUrl, '-O', './approve-images'])
-		await exec.exec('ls', ['approve-images','-al'])
+		await exec.exec('ls', ['approve-images', '-al'])
 		await exec.exec('unzip', [fileName, '-d', 'approve-images/backstop_data'])
 
 
-		await exec.exec('ls', ['approve-images/backstop_data','-al'])
+		await exec.exec('ls', ['approve-images/backstop_data', '-al'])
 
 
 	} catch (error) {
