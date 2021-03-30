@@ -68,11 +68,19 @@ async function runTest() {
 		// todo: pin version?
 		console.log('adding backstop')
 		await exec.exec(quote(yarnPath), ['global', 'add', 'backstopjs'])
-		const bin = await exec.exec(quote(yarnPath), ['global', 'bin'])
+		let bin = ''
+		const options = {
+			listeners: {
+				stdout: (data) => {
+					bin += data.toString()
+				},
+			},
+		}
+		await exec.exec(quote(yarnPath), ['global', 'bin'], options)
 
 		console.log('yarn bin at', bin)
 		// todo: make config location configurable
-		await exec.exec(`${bin}/backstop` , ['test', '--docker'])
+		await exec.exec(`${bin}/backstop`, ['test', '--docker'])
 
 	} catch (err) {
 		console.error('Backstop test failing with ', err)
