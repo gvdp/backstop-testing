@@ -3,6 +3,11 @@ const exec = require('@actions/exec')
 const quote = require('quote')
 const github = require('@actions/github')
 const core = require('@actions/core')
+const got = require('got')
+const fs = require('fs')
+const stream = require('stream')
+const util = require('util')
+const asyncStream = util.promisify(stream.pipeline)
 
 console.log('is core here?', core)
 
@@ -38,14 +43,12 @@ async function downloadArtifact() {
 		const prNumber = prUrl.substr(prUrl.indexOf('/pull/') + '/pull/'.length, prUrl.length)
 
 
-
-
 		console.log('pr number: ', prNumber)
 
 
 		const prOpts = {
 			...context.repo,
-			pull_number: Number(prNumber ),
+			pull_number: Number(prNumber),
 		}
 		console.log('getting pr', prOpts)
 
@@ -71,21 +74,38 @@ async function downloadArtifact() {
 		const wantedArtifact = artifact.artifacts[0]
 
 		console.log('downloading wanted artifact')
-		const artifactUrl = await octokit.request('GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}', {
+		const artifactendpoint = await octokit.actions.downloadArtifact.endpoint({
 			...context.repo,
 			artifact_id: wantedArtifact.id,
-			archive_format: 'archive_format'
+			archive_format: 'archive_format',
 		})
 
-		console.log('Found url', artifactUrl);
+		const resp = await got({
+			url: artifactendpoint.url,
+			headers: artifactendpoint.headers,
+			followRedirect: false,
+		})
 
+		const artifactUrl = resp.headers.location
+
+		console.log('Found url', artifactUrl)
+		const fileName = 'report'
+		const downloadStream = got.stream(url)
+		const fileWriterStream = fs.createWriteStream(fileName)
+		core.info(`Downloading ${url}`)
+		downloadStream.on('downloadProgress', ({transferred, total, percent}) => {
+			const percentage = Math.round(percent * 100)
+			core.info(`Progress: ${transferred}/${total} (${percentage}%)`)
+		})
+
+		await asyncStream(downloadStream, fileWriterStream)
+
+		console.log('Done?')
 		// await exec.exec('wget', [artifactUrl, '-O', './approve-images'])
 		await exec.exec('ls', ['-al'])
 
 
 		await exec.exec('unzip', [artifactUrl, '-O', './approve-images'])
-
-
 
 
 	} catch (error) {
