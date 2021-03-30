@@ -74,12 +74,13 @@ async function downloadArtifact() {
 		const wantedArtifact = artifact.artifacts[0]
 
 		console.log('downloading wanted artifact')
-		const artifactendpoint = await octokit.actions.downloadArtifact.endpoint({
+
+		const artifactendpoint = octokit.actions.downloadArtifact.endpoint({
 			...context.repo,
 			artifact_id: wantedArtifact.id,
 			archive_format: 'archive_format',
 		})
-
+console.log('endpoint: ', artifactendpoint)
 		const resp = await got({
 			url: artifactendpoint.url,
 			headers: artifactendpoint.headers,
