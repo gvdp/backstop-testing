@@ -93,10 +93,10 @@ console.log('endpoint: ', artifactendpoint)
 		const fileName = 'report'
 		const downloadStream = got.stream(artifactUrl)
 		const fileWriterStream = fs.createWriteStream(fileName)
-		core.info(`Downloading ${artifactUrl}`)
+		console.log(`Downloading ${artifactUrl}`)
 		downloadStream.on('downloadProgress', ({transferred, total, percent}) => {
 			const percentage = Math.round(percent * 100)
-			core.info(`Progress: ${transferred}/${total} (${percentage}%)`)
+			console.log(`Progress: ${transferred}/${total} (${percentage}%)`)
 		})
 
 		await asyncStream(downloadStream, fileWriterStream)
