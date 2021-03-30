@@ -120,7 +120,6 @@ async function downloadArtifact() {
 		await exec.exec('unzip', ['-o', fileName,  '-d', 'backstop_data'])
 
 
-		await exec.exec('ls', ['approve-images/backstop_data', '-al'])
 
 
 	} catch (error) {
