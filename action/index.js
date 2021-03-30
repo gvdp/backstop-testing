@@ -66,6 +66,7 @@ async function runTest() {
 	try {
 
 		// todo: pin version?
+		console.log('adding backstop')
 		await exec.exec(quote(yarnPath), ['global', 'add', 'backstopjs'])
 
 		// todo: make config location configurable
