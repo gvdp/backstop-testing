@@ -83,7 +83,7 @@ async function downloadArtifact() {
 console.log('endpoint: ', artifactendpoint)
 		const resp = await got({
 			url: artifactendpoint.url,
-			headers: artifactendpoint.headers,
+			headers: {...artifactendpoint.headers, Authorization: `token ${myToken}`},
 			followRedirect: false,
 		})
 
