@@ -117,7 +117,7 @@ async function downloadArtifact() {
 
 		console.log('Done?')
 		// await exec.exec('wget', [artifactUrl, '-O', './approve-images'])
-		await exec.exec('unzip', [fileName, '-d', 'backstop_data'])
+		await exec.exec('unzip', [fileName, '-o', '-d', 'backstop_data'])
 
 
 		await exec.exec('ls', ['approve-images/backstop_data', '-al'])
