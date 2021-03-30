@@ -138,6 +138,7 @@ async function commitResult() {
 	await exec.exec('git', ['config', '--global', 'user.name', 'github'])
 	await exec.exec('git', ['commit', '-m', 'what up'])
 	await exec.exec('git', ['push'])
+	console.log('committed')
 }
 
 console.log('sstart run')
