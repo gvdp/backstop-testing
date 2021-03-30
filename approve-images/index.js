@@ -90,7 +90,7 @@ console.log('endpoint: ', artifactendpoint)
 		const artifactUrl = resp.headers.location
 
 		console.log('Found url', artifactUrl)
-		const fileName = 'report'
+		const fileName = 'approve-images/backstop_data'
 		const downloadStream = got.stream(artifactUrl)
 		const fileWriterStream = fs.createWriteStream(fileName)
 		console.log(`Downloading ${artifactUrl}`)
@@ -103,10 +103,10 @@ console.log('endpoint: ', artifactendpoint)
 
 		console.log('Done?')
 		// await exec.exec('wget', [artifactUrl, '-O', './approve-images'])
-		await exec.exec('ls', ['-al'])
+		await exec.exec('ls', ['approve-images/backstop_data','-al'])
 
 
-		await exec.exec('unzip', [artifactUrl, '-O', './approve-images'])
+		// await exec.exec('unzip', [artifactUrl, '-O', './approve-images'])
 
 
 	} catch (error) {
@@ -118,7 +118,9 @@ console.log('endpoint: ', artifactendpoint)
 
 async function commitResult() {
 	console.log('committing')
-	await exec.exec('ls')
+	await exec.exec('git', ['add .'])
+	await exec.exec('git', ['commit -m', 'what up'])
+	await exec.exec('git', ['push'])
 }
 
 console.log('sstart run')
