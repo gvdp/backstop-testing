@@ -71,7 +71,7 @@ async function downloadArtifact() {
 		const wantedArtifact = artifact.artifacts[0]
 
 		console.log('downloading wanted artifact')
-		const artifactUrl = await octokit.request('GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}', {
+		const artifactUrl = await octokit.request('HEAD /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}', {
 			...context.repo,
 			artifact_id: wantedArtifact.id,
 			archive_format: 'archive_format'
