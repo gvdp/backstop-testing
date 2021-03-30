@@ -90,13 +90,13 @@ console.log('endpoint: ', artifactendpoint)
 		const artifactUrl = resp.headers.location
 
 		console.log('Found url', artifactUrl)
-		const fileName = 'approve-images/backstop_data'
+		const fileName = 'approve-images/backstop_report.zip'
 		const downloadStream = got.stream(artifactUrl)
 		const fileWriterStream = fs.createWriteStream(fileName)
 		console.log(`Downloading ${artifactUrl}`)
 		downloadStream.on('downloadProgress', ({transferred, total, percent}) => {
 			const percentage = Math.round(percent * 100)
-			console.log(`Progress: ${transferred}/${total} (${percentage}%)`)
+			// console.log(`Progress: ${transferred}/${total} (${percentage}%)`)
 		})
 
 		await asyncStream(downloadStream, fileWriterStream)
@@ -106,7 +106,7 @@ console.log('endpoint: ', artifactendpoint)
 		await exec.exec('ls', ['approve-images/backstop_data','-al'])
 
 
-		// await exec.exec('unzip', [artifactUrl, '-O', './approve-images'])
+		await exec.exec('unzip', [fileName, '-O', 'approve-images/backstop_data'])
 
 
 	} catch (error) {
