@@ -25,7 +25,6 @@ async function approve() {
 	await exec.exec('ls', '/home/runner/work/backstop-testing/backstop-testing/approve-images')
 
 
-
 	return exec.exec(quote(yarnPath), ['approve'], {cwd: 'approve-images'})
 }
 
@@ -122,8 +121,12 @@ async function downloadArtifact() {
 
 async function commitResult() {
 	console.log('committing')
-	await exec.exec('git', ['add .'])
-	await exec.exec('git', ['commit -m', 'what up'])
+	await exec.exec('git', ['status'])
+	await exec.exec('git', ['add', 'approve-images/backstop_data'])
+	await exec.exec('git', ['status'])
+	await exec.exec('git', ['config', '--global', 'user.email', 'ikke@hotmail.com'])
+	await exec.exec('git', ['config', '--global', 'user.name', 'github'])
+	await exec.exec('git', ['commit', '-m', 'what up'])
 	await exec.exec('git', ['push'])
 }
 
