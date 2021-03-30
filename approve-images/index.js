@@ -21,6 +21,10 @@ async function approve() {
 	)
 	console.log('where are we?')
 	await exec.exec('pwd')
+	await exec.exec('ls', '/home/runner/work/backstop-testing/backstop-testing')
+	await exec.exec('ls', '/home/runner/work/backstop-testing/backstop-testing/approve-images')
+
+
 
 	return exec.exec(quote(yarnPath), ['approve'], {cwd: 'approve-images'})
 }
