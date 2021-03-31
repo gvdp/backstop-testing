@@ -4,5 +4,5 @@
 /node_modules/
 yarn-error.log
 /backstop.config-for-docker.json
-/action/node_modules/
+/run-backstop-test/node_modules/
 /approve-images/node_modules/
