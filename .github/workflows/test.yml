@@ -10,15 +10,7 @@ jobs:
     name: Backstop Test
     steps:
       - uses: actions/checkout@v2
-      - uses: bahmutov/npm-install@v1
-        with:
-          working-directory: action # todo: this should happen inside action itself / package with ncc
-      - uses: ./action
-#        with:
-#          path: |
-#            backstop_data/html_report/
-#            backstop_data/bitmaps_test/
-#            backstop_data/bitmaps_reference/
+      - uses: ./run-backstop-test
         env:
           ACTIONS_RUNTIME_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
