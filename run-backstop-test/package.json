@@ -5,7 +5,7 @@
   "author": "gvdp <vdputteglenn@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "ncc build index.js -o dist",
+    "build": "ncc build index.js -o dist"
   },
   "dependencies": {
     "@actions/artifact": "^0.5.0",

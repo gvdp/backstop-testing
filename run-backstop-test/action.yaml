@@ -1,20 +1,22 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Backstop test'
+description: 'Run backstop test in Docker container'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
-  path:  # id of input
-    description: 'path'
-    required: false # todo: make required
+  backstop-data-folder:  # id of input
+    description: 'Folder which contains the backstop_data'
+    required: false
     default: backstop_data
-  if-no-files-found:  # id of input
+  backstop-config:
+    description: 'location of backstop.json'
     required: false
-    default: error
-  name:  # id of input
+    default: backstop.json
+  backstop-version:
+    description: 'version'
     required: false
-    default: backstop report
+    default: 5.1.0
+  report-name:
+    description: "Name for the report artifact"
+    required: false
+    default: Backstop Test Report
 
 runs:
   using: 'node12'
