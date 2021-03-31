@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@actions/artifact@0.5.0":
+"@actions/artifact@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@actions/artifact/-/artifact-0.5.0.tgz#6882702d9cd961f240d7ce1d07106c1b9cb5e39f"
   integrity sha512-uo9zlqm8sZBysFVaBZh8iAe2xNf9x2fDQZZMHiKyBEShvCB2S2nA4+Kt3Xsi9eG5O1E8fVMwEVuwLR3/Zy3mrA==

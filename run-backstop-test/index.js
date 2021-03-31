@@ -4,6 +4,7 @@ console.log('Starting backstop action')
 const exec = require('@actions/exec')
 const core = require('@actions/core')
 const io = require('@actions/io')
+const artifact = require('@actions/artifact')
 const quote = require('quote')
 
 console.log('Backstop loaded')
@@ -41,13 +42,25 @@ fs.writeFileSync(path.join(process.cwd(), 'backstop.json'), JSON.stringify(custo
 
 
 async function upload() {
+
+	const artifactClient = artifact.create()
+	//todo: set name to include branch name
+	const artifactName = 'backstop-report'
+	const files = [
+		'backstop_data',
+	]
+	const rootDirectory = '.'
+	const options = {
+		continueOnError: false,
+	}
+
 	try {
 		console.log('uploading artifact')
-		//todo: set name to include branch name
-		await exec.exec('pwd')
-		await exec.exec('ls')
-		await exec.exec('node action/upload-artifact/index.js')
+		await artifactClient.uploadArtifact(artifactName, files, rootDirectory, options)
+		console.log('uploaded artifact')
+
 	} catch (error) {
+		console.error('Upload failed')
 		console.log(error)
 		core.setFailed(error.message)
 	}
