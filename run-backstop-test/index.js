@@ -47,7 +47,9 @@ async function upload() {
 	//todo: set name to include branch name
 	const artifactName = 'backstop-report'
 	const files = [
-		'backstop_data',
+		'backstop_data/bitmaps_reference',
+		'backstop_data/html_report',
+		'backstop_data/bitmaps_test',
 	]
 	const rootDirectory = '.'
 	const options = {
