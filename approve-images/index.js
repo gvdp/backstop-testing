@@ -116,8 +116,10 @@ async function downloadArtifact() {
 		await asyncStream(downloadStream, fileWriterStream)
 
 		console.log('Done?')
-		// await exec.exec('wget', [artifactUrl, '-O', './approve-images'])
-		await exec.exec('unzip', ['-o', fileName,  '-d', 'backstop_data'])
+
+		// todo: do we need this -d configured?
+		// await exec.exec('unzip', ['-o', fileName,  '-d', 'backstop_data'])
+		await exec.exec('unzip', ['-o', fileName])
 
 
 
