@@ -13,8 +13,7 @@
     "@actions/exec": "1.0.4",
     "@actions/github": "4.0.0",
     "@actions/io": "1.0.2",
-    "backstopjs": "5.1.0",
-    "got": "^11.8.2",
+    "got": "11.8.2",
     "quote": "0.4.0"
   },
   "devDependencies": {

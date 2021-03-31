@@ -1,21 +1,16 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Approve Backstop Images'
+description: 'Action which checks out artifact and approves the changes'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
-  path:  # id of input
-    description: 'path'
+  backstop-folder:
+    description: 'folder'
     required: false
-    default: action/backstop_data
-  if-no-files-found:  # id of input
+    default: backstop_data
+  backstop-version:
+    description: 'version'
     required: false
-    default: error
-  name:  # id of input
-    required: false
-    default: backstop report
+    default: 5.1.0
   token:
+    description: 'github api token'
     required: true
 
 runs:
