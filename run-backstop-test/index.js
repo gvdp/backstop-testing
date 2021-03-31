@@ -1,3 +1,5 @@
+import {findFilesToUpload} from './search'
+
 console.log('Starting backstop action')
 
 // const backstop = require('backstopjs')
@@ -46,19 +48,18 @@ async function upload() {
 	const artifactClient = artifact.create()
 	//todo: set name to include branch name
 	const artifactName = 'backstop-report'
-	const files = [
-		'backstop_data/bitmaps_reference',
-		'backstop_data/html_report',
-		'backstop_data/bitmaps_test',
-	]
+	//todo: get this from inputs
+	const searchResult = await findFilesToUpload('backstop_data')
+
 	const rootDirectory = '.'
 	const options = {
 		continueOnError: false,
 	}
 
+
 	try {
-		console.log('uploading artifact')
-		await artifactClient.uploadArtifact(artifactName, files, rootDirectory, options)
+		console.log('uploading artifact files: ', searchResult)
+		await artifactClient.uploadArtifact(artifactName, searchResult.filesToUpload, rootDirectory, options)
 		console.log('uploaded artifact')
 
 	} catch (error) {
