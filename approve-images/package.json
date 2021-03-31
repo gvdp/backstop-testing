@@ -5,7 +5,7 @@
   "author": "gvdp <vdputteglenn@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "approve": "backstop approve"
+    "build": "ncc build index.js -o dist"
   },
   "dependencies": {
     "@actions/artifact": "0.5.0",
@@ -16,5 +16,8 @@
     "backstopjs": "5.1.0",
     "got": "^11.8.2",
     "quote": "0.4.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.27.0"
   }
 }
