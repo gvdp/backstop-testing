@@ -22,7 +22,10 @@ console.log('config parsed')
 // todo: make this input parameters i/o env variable?
 const baseUrl = process.env.BASE_URL || 'http://host.docker.internal:8000'
 const urlToReplace = process.env.URL_TO_REPLACE || 'http://localhost:8000'
-if (urlToReplace && baseUrl) {
+console.log('base', process.env.BASE_URL)
+console.log('replace', process.env.URL_TO_REPLACE)
+if (process.env.BASE_URL && process.env.URL_TO_REPLACE) {
+	console.log('replacing urls')
 	customConfig.scenarios.forEach((scenario) => {
 		scenario.url = scenario.url.replace(urlToReplace, baseUrl)
 	})
