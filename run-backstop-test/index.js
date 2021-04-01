@@ -19,6 +19,16 @@ const customConfig = JSON.parse(configFile)
 
 console.log('config parsed')
 
+// todo: make this input parameters i/o env variable?
+const baseUrl = process.env.BASE_URL || 'http://host.docker.internal:8000'
+const urlToReplace = process.env.URL_TO_REPLACE || 'http://localhost:8000'
+if (urlToReplace && baseUrl) {
+	customConfig.scenarios.forEach((scenario) => {
+		scenario.url = scenario.url.replace(urlToReplace, baseUrl)
+	})
+}
+
+
 // removes -t parameter for run because ci agent is not a tty terminal
 customConfig.dockerCommandTemplate = 'docker run --rm -i --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}'
 fs.writeFileSync(path.join(process.cwd(), configFileLocation), JSON.stringify(customConfig))
