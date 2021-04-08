@@ -61,12 +61,13 @@ async function downloadArtifact() {
 
 		console.log('listing artifacts')
 
-		const {data: artifacts} = await octokit.request('GET /repos/{owner}/{repo}/actions/artifacts', {
+		const {data: artifactData} = await octokit.request('GET /repos/{owner}/{repo}/actions/artifacts', {
 			...context.repo,
 		})
 
 		//todo: search for the correct one with pr title
-		const wantedArtifact = artifacts.artifacts[0]
+		console.log(artifactData)
+		const wantedArtifact = artifactData.artifacts.filter(artifact => artifact.name.includes(pullRequest.title))[0]
 
 		console.log('downloading wanted artifact')
 
