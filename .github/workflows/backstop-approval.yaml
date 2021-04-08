@@ -5,12 +5,12 @@ on:
     types: [created]
 
 jobs:
-  build:
+  approve:
     runs-on: ubuntu-latest
-    name: Approve backstop test
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'Approve') }}
+    name: Approve Images From Test Report
     steps:
       - uses: actions/checkout@v2
-#        todo: only do this when comment contains keyword
       - uses: ./approve-images
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
