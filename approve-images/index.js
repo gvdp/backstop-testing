@@ -65,8 +65,8 @@ async function downloadArtifact() {
 			...context.repo,
 		})
 
-		//todo: search for the correct one with pr title
-		const wantedArtifact = artifacts.artifacts[0]
+
+		const wantedArtifact = artifacts.artifacts.filter(artifact => artifact.name.includes(pullRequest.title))[0]
 
 		console.log('downloading wanted artifact')
 
