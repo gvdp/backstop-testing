@@ -4,6 +4,7 @@ const exec = require('@actions/exec')
 const core = require('@actions/core')
 const io = require('@actions/io')
 const artifact = require('@actions/artifact')
+const github = require('@actions/github')
 const quote = require('quote')
 const fs = require('fs')
 const path = require('path')
@@ -45,10 +46,14 @@ async function upload() {
 	const searchResult = await findFilesToUpload(backstopFolder)
 	const rootDirectory = '.'
 
+
+
+	console.log(github.context)
+
 	try {
 		console.log('Uploading report files')
-		//todo: set name to include branch name
-		await artifactClient.uploadArtifact(reportName, searchResult.filesToUpload, rootDirectory, {
+
+		await artifactClient.uploadArtifact(`${github.context.ref} - ${reportName}`, searchResult.filesToUpload, rootDirectory, {
 			continueOnError: false,
 		})
 	} catch (error) {
