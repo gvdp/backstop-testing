@@ -74,7 +74,7 @@ async function downloadArtifact() {
 
 		//todo: search for the correct one with pr title
 		console.log(artifactData)
-		const wantedArtifact = artifactData.artifacts.filter(artifact => artifact.name.includes(pullRequest.title))[0]
+		const wantedArtifact = artifactData.artifacts.filter(artifact => artifact.name.includes(pullRequest.title.replace(/\:/g, '')))[0]
 
 		console.log('downloading wanted artifact')
 

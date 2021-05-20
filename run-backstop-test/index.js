@@ -53,7 +53,8 @@ async function upload() {
 	try {
 		console.log('Uploading report files')
 
-		await artifactClient.uploadArtifact(`${github.context.payload.pull_request.title} - ${reportName}`, searchResult.filesToUpload, rootDirectory, {
+		let artifactName = `${github.context.payload.pull_request.title.replace(/\:/g, '')} - ${reportName}`
+		await artifactClient.uploadArtifact(artifactName, searchResult.filesToUpload, rootDirectory, {
 			continueOnError: false,
 		})
 	} catch (error) {
