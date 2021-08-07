@@ -13,7 +13,5 @@ jobs:
       - uses: ./run-backstop-test
         env:
           ACTIONS_RUNTIME_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
 
