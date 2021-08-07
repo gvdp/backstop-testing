@@ -9,7 +9,12 @@ updates:
     directory: "/run-backstop-test" # Location of package manifests
     schedule:
       interval: "weekly"
+    assignees:
+      - 'gvdp'
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/approve-images" # Location of package manifests
     schedule:
       interval: "weekly"
+    assignees:
+      - 'gvdp'
+
