@@ -1,6 +1,6 @@
 {
   "name": "backstop-action",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "repository": "git@github.com:gvdp/backstop-testing.git",
   "author": "gvdp <vdputteglenn@gmail.com>",
   "license": "MIT",
