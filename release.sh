@@ -8,3 +8,4 @@ yarn && yarn build
 )
   git add .
   npx standard-version
+  git push --follow-tags origin main
