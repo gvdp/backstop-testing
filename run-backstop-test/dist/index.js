@@ -1,286 +1,5 @@
-module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
-
-/***/ 6373:
-/***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
-
-"use strict";
-// ESM COMPAT FLAG
-__nccwpck_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/@actions/glob/lib/glob.js
-var glob = __nccwpck_require__(8090);
-// EXTERNAL MODULE: external "path"
-var external_path_ = __nccwpck_require__(5622);
-// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
-var core = __nccwpck_require__(2186);
-// EXTERNAL MODULE: external "fs"
-var external_fs_ = __nccwpck_require__(5747);
-// EXTERNAL MODULE: external "util"
-var external_util_ = __nccwpck_require__(1669);
-// CONCATENATED MODULE: ./search.js
-
-
-
-
-
-
-
-const stats = (0,external_util_.promisify)(external_fs_.stat)
-
-/*
- Blatantly stolen from the existing github action
-https://github.com/actions/upload-artifact/blob/ea3d524381d563437a7d64af63f3d75ca55521c4/src/search.ts#L81
- */
-
-
-function getDefaultGlobOptions() {
-	return {
-		followSymbolicLinks: true,
-		implicitDescendants: true,
-		omitBrokenSymbolicLinks: true,
-	}
-}
-
-
-function getMultiPathLCA(searchPaths) {
-	if (searchPaths.length < 2) {
-		throw new Error('At least two search paths must be provided')
-	}
-
-	const commonPaths = new Array()
-	const splitPaths = new Array()
-	let smallestPathLength = Number.MAX_SAFE_INTEGER
-
-	// split each of the search paths using the platform specific separator
-	for (const searchPath of searchPaths) {
-		;(0,core.debug)(`Using search path ${searchPath}`)
-
-		const splitSearchPath = external_path_.normalize(searchPath).split(external_path_.sep)
-
-		// keep track of the smallest path length so that we don't accidentally later go out of bounds
-		smallestPathLength = Math.min(smallestPathLength, splitSearchPath.length)
-		splitPaths.push(splitSearchPath)
-	}
-
-	// on Unix-like file systems, the file separator exists at the beginning of the file path, make sure to preserve it
-	if (searchPaths[0].startsWith(external_path_.sep)) {
-		commonPaths.push(external_path_.sep)
-	}
-
-	let splitIndex = 0
-
-	// function to check if the paths are the same at a specific index
-	function isPathTheSame() {
-		const compare = splitPaths[0][splitIndex]
-		for (let i = 1; i < splitPaths.length; i++) {
-			if (compare !== splitPaths[i][splitIndex]) {
-				// a non-common index has been reached
-				return false
-			}
-		}
-		return true
-	}
-
-	// loop over all the search paths until there is a non-common ancestor or we go out of bounds
-	while (splitIndex < smallestPathLength) {
-		if (!isPathTheSame()) {
-			break
-		}
-		// if all are the same, add to the end result & increment the index
-		commonPaths.push(splitPaths[0][splitIndex])
-		splitIndex++
-	}
-	return external_path_.join(...commonPaths)
-}
-
-async function findFilesToUpload(
-	searchPath,
-	globOptions,
-) {
-	const searchResults = []
-	const globber = await glob.create(
-		searchPath,
-		globOptions || getDefaultGlobOptions(),
-	)
-	const rawSearchResults = await globber.glob()
-
-	/*
-			Files are saved with case insensitivity. Uploading both a.txt and A.txt will files to be overwritten
-			Detect any files that could be overwritten for user awareness
-	*/
-	const set = new Set()
-
-	/*
-			Directories will be rejected if attempted to be uploaded. This includes just empty
-			directories so filter any directories out from the raw search results
-	*/
-	for (const searchResult of rawSearchResults) {
-		const fileStats = await stats(searchResult)
-		// isDirectory() returns false for symlinks if using fs.lstat(), make sure to use fs.stat() instead
-		if (!fileStats.isDirectory()) {
-			;(0,core.debug)(`File:${searchResult} was found using the provided searchPath`)
-			searchResults.push(searchResult)
-
-			// detect any files that would be overwritten because of case insensitivity
-			if (set.has(searchResult.toLowerCase())) {
-				;(0,core.info)(
-					`Uploads are case insensitive: ${searchResult} was detected that it will be overwritten by another file with the same path`,
-				)
-			} else {
-				set.add(searchResult.toLowerCase())
-			}
-		} else {
-			(0,core.debug)(
-				`Removing ${searchResult} from rawSearchResults because it is a directory`,
-			)
-		}
-	}
-
-// Calculate the root directory for the artifact using the search paths that were utilized
-	const searchPaths = globber.getSearchPaths()
-
-	if (searchPaths.length > 1) {
-		;(0,core.info)(
-			`Multiple search paths detected. Calculating the least common ancestor of all paths`,
-		)
-		const lcaSearchPath = getMultiPathLCA(searchPaths)
-		;(0,core.info)(
-			`The least common ancestor is ${lcaSearchPath}. This will be the root directory of the artifact`,
-		)
-
-		return {
-			filesToUpload: searchResults,
-			rootDirectory: lcaSearchPath,
-		}
-	}
-
-	/*
-			Special case for a single file artifact that is uploaded without a directory or wildcard pattern. The directory structure is
-			not preserved and the root directory will be the single files parent directory
-	*/
-	if (searchResults.length === 1 && searchPaths[0] === searchResults[0]) {
-		return {
-			filesToUpload: searchResults,
-			rootDirectory: (0,external_path_.dirname)(searchResults[0]),
-		}
-	}
-
-	return {
-		filesToUpload: searchResults,
-		rootDirectory: searchPaths[0],
-	}
-}
-
-// CONCATENATED MODULE: ./index.js
-
-
-const exec = __nccwpck_require__(1514)
-const index_core = __nccwpck_require__(2186)
-const io = __nccwpck_require__(7436)
-const artifact = __nccwpck_require__(2605)
-const github = __nccwpck_require__(5438)
-const quote = __nccwpck_require__(5427)
-const fs = __nccwpck_require__(5747)
-const path = __nccwpck_require__(5622)
-
-console.log('Starting backstop action')
-
-const configFileLocation = index_core.getInput('backstop-config')
-const reportName = index_core.getInput('report-name')
-const backstopFolder = index_core.getInput('backstop-data-folder')
-
-const configFile = fs.readFileSync(path.join(process.cwd(), configFileLocation))
-const customConfig = JSON.parse(configFile)
-
-console.log('config parsed')
-
-// todo: make this input parameters i/o env variable?
-const baseUrl = process.env.BASE_URL || 'http://host.docker.internal:8000'
-const urlToReplace = process.env.URL_TO_REPLACE || 'http://localhost:8000'
-console.log('base', process.env.BASE_URL)
-console.log('replace', process.env.URL_TO_REPLACE)
-if (process.env.BASE_URL && process.env.URL_TO_REPLACE) {
-	console.log('replacing urls')
-	customConfig.scenarios.forEach((scenario) => {
-		scenario.url = scenario.url.replace(urlToReplace, baseUrl)
-	})
-}
-
-
-// removes -t parameter for run because ci agent is not a tty terminal
-customConfig.dockerCommandTemplate = 'docker run --rm -i --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}'
-fs.writeFileSync(path.join(process.cwd(), configFileLocation), JSON.stringify(customConfig))
-
-console.log('Running backstop with config', customConfig)
-
-
-async function upload() {
-
-	const artifactClient = artifact.create()
-	const searchResult = await findFilesToUpload(backstopFolder)
-	const rootDirectory = '.'
-
-
-
-	console.log(github.context)
-
-	try {
-		console.log('Uploading report files')
-
-		let artifactName = `${github.context.payload.pull_request.title.replace(/[\:\/]/g, '')} - ${reportName}`
-		await artifactClient.uploadArtifact(artifactName, searchResult.filesToUpload, rootDirectory, {
-			continueOnError: false,
-		})
-	} catch (error) {
-		console.error('Upload failed')
-		console.log(error)
-		index_core.setFailed(error.message)
-	}
-}
-
-
-async function getPathOfGlobalYarnExecutables(yarnPath) {
-	// todo: same as in other action, could be extracted
-	let bin = ''
-	const options = {
-		listeners: {
-			stdout: (data) => {
-				bin += data.toString()
-			},
-		},
-	}
-	await exec.exec(quote(yarnPath), ['global', 'bin'], options)
-	return bin
-}
-
-async function runTest() {
-	const yarnPath = await io.which('yarn', true)
-
-	try {
-
-
-		console.log('adding backstop')
-		const backstopVersion = index_core.getInput('backstop-version')
-		await exec.exec(quote(yarnPath), ['global', 'add', `backstopjs@${backstopVersion}`])
-		const executablePath = await getPathOfGlobalYarnExecutables(yarnPath)
-
-		// todo: use configured .json location
-		await exec.exec(`${executablePath.trim()}/backstop`, ['test', '--docker'])
-
-	} catch (err) {
-		console.error('Backstop test failing with ', err)
-		index_core.setFailed(err.message)
-		return upload()
-	}
-	console.log('backstop test done')
-}
-
-runTest()
-
-
-/***/ }),
 
 /***/ 2605:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
@@ -15853,7 +15572,7 @@ module.exports = eval("require")("encoding");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("assert");;
+module.exports = require("assert");
 
 /***/ }),
 
@@ -15861,7 +15580,7 @@ module.exports = require("assert");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("child_process");;
+module.exports = require("child_process");
 
 /***/ }),
 
@@ -15869,7 +15588,7 @@ module.exports = require("child_process");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("crypto");;
+module.exports = require("crypto");
 
 /***/ }),
 
@@ -15877,7 +15596,7 @@ module.exports = require("crypto");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("events");;
+module.exports = require("events");
 
 /***/ }),
 
@@ -15885,7 +15604,7 @@ module.exports = require("events");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("fs");;
+module.exports = require("fs");
 
 /***/ }),
 
@@ -15893,7 +15612,7 @@ module.exports = require("fs");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("http");;
+module.exports = require("http");
 
 /***/ }),
 
@@ -15901,7 +15620,7 @@ module.exports = require("http");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("https");;
+module.exports = require("https");
 
 /***/ }),
 
@@ -15909,7 +15628,7 @@ module.exports = require("https");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("net");;
+module.exports = require("net");
 
 /***/ }),
 
@@ -15917,7 +15636,7 @@ module.exports = require("net");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("os");;
+module.exports = require("os");
 
 /***/ }),
 
@@ -15925,7 +15644,7 @@ module.exports = require("os");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("path");;
+module.exports = require("path");
 
 /***/ }),
 
@@ -15933,7 +15652,7 @@ module.exports = require("path");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("perf_hooks");;
+module.exports = require("perf_hooks");
 
 /***/ }),
 
@@ -15941,7 +15660,7 @@ module.exports = require("perf_hooks");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("stream");;
+module.exports = require("stream");
 
 /***/ }),
 
@@ -15949,7 +15668,7 @@ module.exports = require("stream");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("tls");;
+module.exports = require("tls");
 
 /***/ }),
 
@@ -15957,7 +15676,7 @@ module.exports = require("tls");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("url");;
+module.exports = require("url");
 
 /***/ }),
 
@@ -15965,7 +15684,7 @@ module.exports = require("url");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("util");;
+module.exports = require("util");
 
 /***/ }),
 
@@ -15973,7 +15692,7 @@ module.exports = require("util");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("zlib");;
+module.exports = require("zlib");
 
 /***/ })
 
@@ -15985,8 +15704,9 @@ module.exports = require("zlib");;
 /******/ 	// The require function
 /******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -16022,10 +15742,288 @@ module.exports = require("zlib");;
 /******/ 	
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
-/******/ 	__nccwpck_require__.ab = __dirname + "/";/************************************************************************/
-/******/ 	// module exports must be returned from runtime so entry inlining is disabled
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	return __nccwpck_require__(6373);
+/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+// ESM COMPAT FLAG
+__nccwpck_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: ./node_modules/@actions/glob/lib/glob.js
+var glob = __nccwpck_require__(8090);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __nccwpck_require__(5622);
+// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
+var core = __nccwpck_require__(2186);
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __nccwpck_require__(5747);
+// EXTERNAL MODULE: external "util"
+var external_util_ = __nccwpck_require__(1669);
+;// CONCATENATED MODULE: ./search.js
+
+
+
+
+
+
+
+const stats = (0,external_util_.promisify)(external_fs_.stat)
+
+/*
+ Blatantly stolen from the existing github action
+https://github.com/actions/upload-artifact/blob/ea3d524381d563437a7d64af63f3d75ca55521c4/src/search.ts#L81
+ */
+
+
+function getDefaultGlobOptions() {
+	return {
+		followSymbolicLinks: true,
+		implicitDescendants: true,
+		omitBrokenSymbolicLinks: true,
+	}
+}
+
+
+function getMultiPathLCA(searchPaths) {
+	if (searchPaths.length < 2) {
+		throw new Error('At least two search paths must be provided')
+	}
+
+	const commonPaths = new Array()
+	const splitPaths = new Array()
+	let smallestPathLength = Number.MAX_SAFE_INTEGER
+
+	// split each of the search paths using the platform specific separator
+	for (const searchPath of searchPaths) {
+		;(0,core.debug)(`Using search path ${searchPath}`)
+
+		const splitSearchPath = external_path_.normalize(searchPath).split(external_path_.sep)
+
+		// keep track of the smallest path length so that we don't accidentally later go out of bounds
+		smallestPathLength = Math.min(smallestPathLength, splitSearchPath.length)
+		splitPaths.push(splitSearchPath)
+	}
+
+	// on Unix-like file systems, the file separator exists at the beginning of the file path, make sure to preserve it
+	if (searchPaths[0].startsWith(external_path_.sep)) {
+		commonPaths.push(external_path_.sep)
+	}
+
+	let splitIndex = 0
+
+	// function to check if the paths are the same at a specific index
+	function isPathTheSame() {
+		const compare = splitPaths[0][splitIndex]
+		for (let i = 1; i < splitPaths.length; i++) {
+			if (compare !== splitPaths[i][splitIndex]) {
+				// a non-common index has been reached
+				return false
+			}
+		}
+		return true
+	}
+
+	// loop over all the search paths until there is a non-common ancestor or we go out of bounds
+	while (splitIndex < smallestPathLength) {
+		if (!isPathTheSame()) {
+			break
+		}
+		// if all are the same, add to the end result & increment the index
+		commonPaths.push(splitPaths[0][splitIndex])
+		splitIndex++
+	}
+	return external_path_.join(...commonPaths)
+}
+
+async function findFilesToUpload(
+	searchPath,
+	globOptions,
+) {
+	const searchResults = []
+	const globber = await glob.create(
+		searchPath,
+		globOptions || getDefaultGlobOptions(),
+	)
+	const rawSearchResults = await globber.glob()
+
+	/*
+			Files are saved with case insensitivity. Uploading both a.txt and A.txt will files to be overwritten
+			Detect any files that could be overwritten for user awareness
+	*/
+	const set = new Set()
+
+	/*
+			Directories will be rejected if attempted to be uploaded. This includes just empty
+			directories so filter any directories out from the raw search results
+	*/
+	for (const searchResult of rawSearchResults) {
+		const fileStats = await stats(searchResult)
+		// isDirectory() returns false for symlinks if using fs.lstat(), make sure to use fs.stat() instead
+		if (!fileStats.isDirectory()) {
+			(0,core.debug)(`File:${searchResult} was found using the provided searchPath`)
+			searchResults.push(searchResult)
+
+			// detect any files that would be overwritten because of case insensitivity
+			if (set.has(searchResult.toLowerCase())) {
+				(0,core.info)(
+					`Uploads are case insensitive: ${searchResult} was detected that it will be overwritten by another file with the same path`,
+				)
+			} else {
+				set.add(searchResult.toLowerCase())
+			}
+		} else {
+			(0,core.debug)(
+				`Removing ${searchResult} from rawSearchResults because it is a directory`,
+			)
+		}
+	}
+
+// Calculate the root directory for the artifact using the search paths that were utilized
+	const searchPaths = globber.getSearchPaths()
+
+	if (searchPaths.length > 1) {
+		(0,core.info)(
+			`Multiple search paths detected. Calculating the least common ancestor of all paths`,
+		)
+		const lcaSearchPath = getMultiPathLCA(searchPaths)
+		;(0,core.info)(
+			`The least common ancestor is ${lcaSearchPath}. This will be the root directory of the artifact`,
+		)
+
+		return {
+			filesToUpload: searchResults,
+			rootDirectory: lcaSearchPath,
+		}
+	}
+
+	/*
+			Special case for a single file artifact that is uploaded without a directory or wildcard pattern. The directory structure is
+			not preserved and the root directory will be the single files parent directory
+	*/
+	if (searchResults.length === 1 && searchPaths[0] === searchResults[0]) {
+		return {
+			filesToUpload: searchResults,
+			rootDirectory: (0,external_path_.dirname)(searchResults[0]),
+		}
+	}
+
+	return {
+		filesToUpload: searchResults,
+		rootDirectory: searchPaths[0],
+	}
+}
+
+;// CONCATENATED MODULE: ./index.js
+
+
+const exec = __nccwpck_require__(1514)
+const index_core = __nccwpck_require__(2186)
+const io = __nccwpck_require__(7436)
+const artifact = __nccwpck_require__(2605)
+const github = __nccwpck_require__(5438)
+const quote = __nccwpck_require__(5427)
+const fs = __nccwpck_require__(5747)
+const path = __nccwpck_require__(5622)
+
+console.log('Starting backstop action')
+
+const configFileLocation = index_core.getInput('backstop-config')
+const reportName = index_core.getInput('report-name')
+const backstopFolder = index_core.getInput('backstop-data-folder')
+
+const configFile = fs.readFileSync(path.join(process.cwd(), configFileLocation))
+const customConfig = JSON.parse(configFile)
+
+console.log('config parsed')
+
+// todo: make this input parameters i/o env variable?
+const baseUrl = process.env.BASE_URL || 'http://host.docker.internal:8000'
+const urlToReplace = process.env.URL_TO_REPLACE || 'http://localhost:8000'
+console.log('base', process.env.BASE_URL)
+console.log('replace', process.env.URL_TO_REPLACE)
+if (process.env.BASE_URL && process.env.URL_TO_REPLACE) {
+	console.log('replacing urls')
+	customConfig.scenarios.forEach((scenario) => {
+		scenario.url = scenario.url.replace(urlToReplace, baseUrl)
+	})
+}
+
+
+// removes -t parameter for run because ci agent is not a tty terminal
+customConfig.dockerCommandTemplate = 'docker run --rm -i --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}'
+fs.writeFileSync(path.join(process.cwd(), configFileLocation), JSON.stringify(customConfig))
+
+console.log('Running backstop with config', customConfig)
+
+
+async function upload() {
+
+	const artifactClient = artifact.create()
+	const searchResult = await findFilesToUpload(backstopFolder)
+	const rootDirectory = '.'
+
+
+
+	console.log(github.context)
+
+	try {
+		console.log('Uploading report files')
+
+		let artifactName = `${github.context.payload.pull_request.title.replace(/[\:\/]/g, '')} - ${reportName}`
+		await artifactClient.uploadArtifact(artifactName, searchResult.filesToUpload, rootDirectory, {
+			continueOnError: false,
+		})
+	} catch (error) {
+		console.error('Upload failed')
+		console.log(error)
+		index_core.setFailed(error.message)
+	}
+}
+
+
+async function getPathOfGlobalYarnExecutables(yarnPath) {
+	// todo: same as in other action, could be extracted
+	let bin = ''
+	const options = {
+		listeners: {
+			stdout: (data) => {
+				bin += data.toString()
+			},
+		},
+	}
+	await exec.exec(quote(yarnPath), ['global', 'bin'], options)
+	return bin
+}
+
+async function runTest() {
+	const yarnPath = await io.which('yarn', true)
+
+	try {
+
+
+		console.log('adding backstop')
+		const backstopVersion = index_core.getInput('backstop-version')
+		await exec.exec(quote(yarnPath), ['global', 'add', `backstopjs@${backstopVersion}`])
+		const executablePath = await getPathOfGlobalYarnExecutables(yarnPath)
+
+		// todo: use configured .json location
+		await exec.exec(`${executablePath.trim()}/backstop`, ['test', '--docker'])
+
+	} catch (err) {
+		console.error('Backstop test failing with ', err)
+		index_core.setFailed(err.message)
+		return upload()
+	}
+	console.log('backstop test done')
+}
+
+runTest()
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;
